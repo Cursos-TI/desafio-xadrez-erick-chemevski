@@ -22,6 +22,7 @@ void MoverBispo(unsigned int casas, int opcaoDirecao) {
             break;
         default:
             direcao = "Direção inválida\n"; // Mensagem de erro
+            casas = 1;
             break;
     }
 
@@ -50,6 +51,7 @@ void MoverTorre(unsigned int casas, int opcaoDirecao) {
         
         default:
             direcao = "Direção inválida\n"; // Mensagem de erro
+            casas = 1;
             break;
     }
     if(casas > 0){ //Coloquei dentro de um if pois como é um do - while, ele vai executar 1 iteração antes de saber se o número de movimentos é zero, assim não executa caso o usuário tenha digitado 0.
@@ -91,12 +93,72 @@ void MoverRainha(unsigned int casas, int opcaoDirecao) {
             break;
         default:
             direcao = "Direção inválida\n"; // Mensagem de erro
+            casas = 1;
             break;
     }
 
     for (; casas > 0; casas--) {
         printf("%s", direcao);
     }
+
+}
+
+void MoverCavalo(int opcaoDirecao) {
+    const char *direcaoUmaCasa; // Ponteiro para armazenar a string correta
+    const char *direcaoDuasCasas;
+    int i, j;
+    
+    switch (opcaoDirecao) {
+        case 1:
+            direcaoDuasCasas = "Cavalo Moveu para cima\n";
+            direcaoUmaCasa = "Cavalo Moveu para direita\n";
+            break;
+        case 2:
+            direcaoDuasCasas = "Cavalo Moveu para cima\n";
+            direcaoUmaCasa = "Cavalo Moveu para esquerda\n";
+            break;
+        case 3:
+            direcaoDuasCasas = "Cavalo Moveu para baixo\n";
+            direcaoUmaCasa = "Cavalo Moveu para direita\n";
+            break;
+        case 4:
+            direcaoDuasCasas = "Cavalo Moveu para baixo\n";
+            direcaoUmaCasa = "Cavalo Moveu para esquerda\n";
+            break;
+        case 5:
+            direcaoDuasCasas = "Cavalo Moveu para direita\n";
+            direcaoUmaCasa = "Cavalo Moveu para cima\n";
+            break;
+        case 6:
+            direcaoDuasCasas = "Cavalo Moveu para direita\n";
+            direcaoUmaCasa = "Cavalo Moveu para baixo\n";
+            break;
+        case 7:
+            direcaoDuasCasas = "Cavalo Moveu para esquerda\n";
+            direcaoUmaCasa = "Cavalo Moveu para cima\n";
+            break;
+        case 8:
+            direcaoDuasCasas = "Cavalo Moveu para esquerda\n";
+            direcaoUmaCasa = "Cavalo Moveu para baixo\n";
+            break;
+        default:
+            direcaoDuasCasas = "Direção inválida\n";
+            direcaoUmaCasa = "Direção inválida\n";  // Mensagem de erro
+            break;
+    }
+    if(direcaoUmaCasa == "Direção inválida\n"){
+        printf(direcaoUmaCasa);
+    }else{
+        for(i = 0; i < 1; i++){
+            j = 0;
+            while(j < 2){
+                printf(direcaoDuasCasas);
+                j++;
+            }
+            printf(direcaoUmaCasa);
+        }
+    }
+    
 
 }
 
@@ -108,15 +170,16 @@ int main() {
     bool continuar = true;
 
     do{
-        printf("Qual peça você deseja mover? (digite de 1 - 4)\n"); //Menu de escolha da peça
+        printf("Qual peça você deseja mover? (digite de 1 - 5)\n"); //Menu de escolha da peça
         printf("(1) Bispo\n");
         printf("(2) Torre\n");
         printf("(3) Rainha\n");
-        printf("(4) Sair\n");
+        printf("(4) Cavalo\n");
+        printf("(5) Sair\n");
 
         scanf("%d", &opcao);
 
-        if(opcao == 4){                         //Se opcao == 4 sai do programa, se não continua para as outras opções
+        if(opcao == 5){                         //Se opcao == 4 sai do programa, se não continua para as outras opções
             continuar = false;
             printf("Saindo do programa\n");
         }else{
@@ -159,6 +222,21 @@ int main() {
 
                 scanf("%d", &opcaoDirecao);
                 MoverRainha(casas, opcaoDirecao);
+                break;
+
+            case 4:
+                printf("\n***Número de casas é desconsiderado para Cavalo***\n");
+                printf("Qual direção deseja mover o Cavalo? (digite de 1 - 8)\n");  //Escolha da direção a se mover
+                printf("(1) Acima -> Direita\n");
+                printf("(2) Acima -> Esquerda\n");
+                printf("(3) Abaixo -> Direita\n");
+                printf("(4) Abaixo -> Esquerda\n");
+                printf("(5) Direita -> Acima\n");
+                printf("(6) Direita -> Abaixo\n");
+                printf("(7) Esquerda -> Acima\n");
+                printf("(8) Esquerda -> Abaixo\n");
+                scanf("%d", &opcaoDirecao);
+                MoverCavalo(opcaoDirecao);
                 break;
             
             default:
