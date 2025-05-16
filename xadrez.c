@@ -4,36 +4,58 @@
 // Desafio de Xadrez - MateCheck
 // Este código inicial serve como base para o desenvolvimento do sistema de movimentação das peças de xadrez.
 // O objetivo é utilizar estruturas de repetição e funções para determinar os limites de movimentação dentro do jogo.
-void MoverBispo(unsigned int casas, int opcaoDirecao) {
-    const char *direcao; // Ponteiro para armazenar a string correta
-
-    switch (opcaoDirecao) {
-        case 1:
-            direcao = "Bispo Moveu para cima\nBispo Moveu para direita\n";
-            break;
-        case 2:
-            direcao = "Bispo Moveu para cima\nBispo Moveu para esquerda\n";
-            break;
-        case 3:
-            direcao = "Bispo Moveu para baixo\nBispo Moveu para direita\n";
-            break;
-        case 4:
-            direcao = "Bispo Moveu para baixo\nBispo Moveu para esquerda\n";
-            break;
-        default:
-            direcao = "Direção inválida\n"; // Mensagem de erro
-            casas = 1;
-            break;
-    }
-
-    while (casas > 0) {
-        printf("%s", direcao);
-        casas--;
+void PrintRecursivo(char* direcao, int casas){ //função para printar os movimentos de forma recursiva
+    if(casas > 0){
+        printf(direcao);
+        PrintRecursivo(direcao, casas-1);
     }
 }
 
+void PrintBispoRecursivo(int casas, char* direcaoVertical, char* direcaoHorizontal) {
+    if (casas == 0) return; // Condição de parada
+
+    printf(direcaoVertical); // Movimento vertical
+
+    // Loop interno para o movimento horizontal
+    for (int i = 0; i < 1; i++) {
+        printf(direcaoHorizontal);
+    }
+
+    PrintBispoRecursivo(casas - 1, direcaoVertical, direcaoHorizontal); // Chamada recursiva reduzindo casas
+}
+
+void MoverBispo(unsigned int casas, int opcaoDirecao) {
+    char *direcaoVertical, *direcaoHorizontal; // Ponteiro para armazenar a string correta
+
+    switch (opcaoDirecao) {
+        case 1:
+            direcaoVertical = "Bispo Moveu para cima\n";
+            direcaoHorizontal = "Bispo Moveu para direita\n";
+            break;
+        case 2:
+            direcaoVertical = "Bispo Moveu para cima\n";
+            direcaoHorizontal = "Bispo Moveu para esquerda\n";
+            break;
+        case 3:
+            direcaoVertical = "Bispo Moveu para baixo\n";
+            direcaoHorizontal = "Bispo Moveu para direita\n";
+            break;
+        case 4:
+            direcaoVertical = "Bispo Moveu para baixo\n";
+            direcaoHorizontal = "Bispo Moveu para esquerda\n";
+            break;
+        default:
+            direcaoVertical = "Direção inválida\n"; // Mensagem de erro
+            direcaoHorizontal = "";
+            casas = 1;
+            break;
+    }
+    PrintBispoRecursivo(casas, direcaoVertical, direcaoHorizontal);
+}
+
+
 void MoverTorre(unsigned int casas, int opcaoDirecao) {
-    const char *direcao; // Ponteiro para armazenar a string correta
+    char *direcao; // Ponteiro para armazenar a string correta
 
     switch (opcaoDirecao) {
         case 1:
@@ -54,17 +76,12 @@ void MoverTorre(unsigned int casas, int opcaoDirecao) {
             casas = 1;
             break;
     }
-    if(casas > 0){ //Coloquei dentro de um if pois como é um do - while, ele vai executar 1 iteração antes de saber se o número de movimentos é zero, assim não executa caso o usuário tenha digitado 0.
-        do{
-            printf("%s", direcao);
-            casas--;
-        }while (casas > 0);
-    }
+    PrintRecursivo(direcao, casas);
     
 }
 
 void MoverRainha(unsigned int casas, int opcaoDirecao) {
-    const char *direcao; // Ponteiro para armazenar a string correta
+    char *direcao; // Ponteiro para armazenar a string correta
 
     switch (opcaoDirecao) {
         case 1:
@@ -97,9 +114,7 @@ void MoverRainha(unsigned int casas, int opcaoDirecao) {
             break;
     }
 
-    for (; casas > 0; casas--) {
-        printf("%s", direcao);
-    }
+    PrintRecursivo(direcao, casas);
 
 }
 
@@ -149,18 +164,22 @@ void MoverCavalo(int opcaoDirecao) {
     if(direcaoUmaCasa == "Direção inválida\n"){
         printf(direcaoUmaCasa);
     }else{
-        for(i = 0; i < 1; i++){
-            j = 0;
-            while(j < 2){
-                printf(direcaoDuasCasas);
+        for (int i = 0, j = 0; i < 1; i++) { // Loop externo controla o movimento principal
+            while (j < 3) { // Loop interno controla execuções específicas
+                if (j == 2) { // Condição para o último movimento
+                    printf("%s", direcaoUmaCasa);
+                    break; // Sai do loop após mover para a direita
+                }
+
+                printf("%s", direcaoDuasCasas);
+                
                 j++;
             }
-            printf(direcaoUmaCasa);
         }
     }
-    
-
 }
+
+
 
 
 int main() {
@@ -247,27 +266,6 @@ int main() {
         }
         
     }while(continuar);
-    
-    
-    // Implementação de Movimentação do Bispo
-    // Sugestão: Utilize uma estrutura de repetição para simular a movimentação do Bispo em diagonal.
-
-    // Implementação de Movimentação da Torre
-    // Sugestão: Utilize uma estrutura de repetição para simular a movimentação da Torre para a direita.
-
-    // Implementação de Movimentação da Rainha
-    // Sugestão: Utilize uma estrutura de repetição para simular a movimentação da Rainha para a esquerda.
-
-    // Nível Aventureiro - Movimentação do Cavalo
-    // Sugestão: Utilize loops aninhados para simular a movimentação do Cavalo em L.
-    // Um loop pode representar a movimentação horizontal e outro vertical.
-
-    // Nível Mestre - Funções Recursivas e Loops Aninhados
-    // Sugestão: Substitua as movimentações das peças por funções recursivas.
-    // Exemplo: Crie uma função recursiva para o movimento do Bispo.
-
-    // Sugestão: Implemente a movimentação do Cavalo utilizando loops com variáveis múltiplas e condições avançadas.
-    // Inclua o uso de continue e break dentro dos loops.
 
     return 0;
 }
